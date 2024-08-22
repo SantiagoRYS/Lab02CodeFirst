@@ -1,0 +1,172 @@
+﻿@model BibliotecaWebApplication.Models.Libro
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear</h1>
+
+<h4>Libro</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ISBN" class="control-label"></label>
+                <input asp-for="ISBN" class="form-control" />
+                <span asp-validation-for="ISBN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Titulo" class="control-label"></label>
+                <input asp-for="Titulo" class="form-control" />
+                <span asp-validation-for="Titulo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroPaginas" class="control-label"></label>
+                <input asp-for="NumeroPaginas" class="form-control" />
+                <span asp-validation-for="NumeroPaginas" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Formato" class="control-label"></label>
+                <input asp-for="Formato" class="form-control" />
+                <span asp-validation-for="Formato" class="text-danger"></span>
+            </div>
+
+            <h4>Seleccionar Autor(es)</h4>
+            <table id="dataTable" class="table">
+                <thead>
+                    <tr>
+                        <th>Seleccionar</th>
+                        <th>Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Nacionalidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var autor in ViewBag.Autores)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="selectedAutores" value="@autor.AutorId" />
+                            </td>
+                            <td>@autor.Nombres</td>
+                            <td>@autor.Apellidos</td>
+                            <td>@autor.Nacionalidad</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#createAuthorModal">
+                + Crear Autor
+            </button>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="&#43; Crear" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        &#8592; Volver atrás
+    </a>
+</div>
+
+
+<!-- Modal para crear un autor por medio de un popup -->
+<div class="modal fade" id="createAuthorModal" tabindex="-1" role="dialog" aria-labelledby="createAuthorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createAuthorModalLabel">Crear Autor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="createAuthorForm" asp-controller="Autores" asp-action="Create" method="post">
+                    <div class="form-group">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" class="form-control" id="nombres" name="Nombres" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" class="form-control" id="apellidos" name="Apellidos" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="nacionalidad">Nacionalidad</label>
+                        <input type="text" class="form-control" id="nacionalidad" name="Nacionalidad" required />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="saveAuthorButton">Guardar Autor</button>
+                    </div>
+                </form>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "lengthMenu": "Mostrar _MENU_ entradas por página",
+                    "zeroRecords": "No se encontraron resultados",
+                    "info": "Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    "infoEmpty": "Mostrando 0 a 0 de 0 entradas",
+                    "infoFiltered": "(filtrado de _MAX_ entradas totales)",
+                    "search": "Buscar:",
+                    "paginate": {
+                        "first": "Primero",
+                        "last": "Último",
+                        "next": "Siguiente",
+                        "previous": "Anterior"
+                    }
+                }
+            });
+
+            $('#saveAuthorButton').click(function () {
+                var form = $('#createAuthorForm');
+                var formData = form.serialize(); // Serializa el formulario
+
+                $.ajax({
+                    url: form.attr('action'), // Usa la URL del formulario
+                    type: 'POST',
+                    data: formData,
+                    success: function (result) {
+                        if (result.success) {
+                            var newAuthor = result.autor;
+                            var newRow = '<tr>' +
+                                '<td><input type="checkbox" name="selectedAutores" value="' + newAuthor.autorId + '" /></td>' +
+                                '<td>' + newAuthor.nombres + '</td>' +
+                                '<td>' + newAuthor.apellidos + '</td>' +
+                                '<td>' + newAuthor.nacionalidad + '</td>' +
+                                '</tr>';
+                            $('#dataTable tbody').append(newRow);
+                            $('#createAuthorModal').modal('hide'); // Cierra el modal
+                            form[0].reset(); // Resetea el formulario
+                        } else {
+                            alert('Error al crear el autor: ' + result.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error al crear el autor: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

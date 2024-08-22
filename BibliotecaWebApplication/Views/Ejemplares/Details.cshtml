@@ -1,0 +1,41 @@
+﻿@model BibliotecaWebApplication.Models.Ejemplar
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles del Ejemplar</h1>
+
+<div>
+    <h4>Ejemplar</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EjemplarId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EjemplarId)
+        </dd>
+        <dt>
+            Publicación
+        </dt>
+        <dd>
+            @ViewData["PublicacionTexto"] 
+        </dd>
+        <dt class="col-sm-2">
+            Estante
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Estante.CodigoEstante
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.EjemplarId" class="btn btn-warning"><i class="bi bi-info-circle"></i> Editar</a>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        &#8592; Volver atrás
+    </a>
+</div>

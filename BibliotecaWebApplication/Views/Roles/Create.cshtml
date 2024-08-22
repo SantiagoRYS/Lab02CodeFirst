@@ -1,0 +1,27 @@
+﻿@model BibliotecaWebApplication.Models.VeiewModels.RoleViewModel
+
+<h2>Crear Roles</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Nombre del Rol</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-success">
+        <i class="fas fa-plus"></i> Crear
+    </button>
+</form>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        &#8592; Volver atrás
+    </a>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

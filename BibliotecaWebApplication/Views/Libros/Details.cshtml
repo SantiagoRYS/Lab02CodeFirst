@@ -1,0 +1,76 @@
+﻿@model BibliotecaWebApplication.Models.Libro
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Libro</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ISBN)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ISBN)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NumeroPaginas)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NumeroPaginas)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Formato)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Formato)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PublicacionId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PublicacionId)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <h4>Autor(es):</h4>
+    @if (Model.AutorLibros.Any())
+    {
+        <ul class="list-group list-group-flush">
+            @foreach (var autorLibro in Model.AutorLibros)
+            {
+                <li class="list-group-item d-flex align-items-center">
+                    <i class="fas fa-user fa-2x text-primary me-2" title="Autor"></i>
+                    <span class="fw-semibold">
+                        @autorLibro.Autor.Nombres @autorLibro.Autor.Apellidos
+                    </span>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Este libro no tiene autores asociados.</p>
+    }
+</div>
+
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.LibroId" class="btn btn-warning"><i class="bi bi-info-circle"></i> Editar</a>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        &#8592; Volver atrás
+    </a>
+</div>

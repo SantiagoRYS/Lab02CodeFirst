@@ -1,0 +1,35 @@
+﻿@model BibliotecaWebApplication.Models.Estanteria
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Detalles</h1>
+
+<div>
+    <h4>Estanteria</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Alto)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Alto)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ancho)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ancho)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.EstanteriaId" class="btn btn-warning"><i class="bi bi-info-circle"></i> Editar</a>
+</div>
+<div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">
+        &#8592; Volver atrás
+    </a>
+</div>
