@@ -8,7 +8,7 @@ namespace BibliotecaWebApplication.Models.Seeds
         {
             context.Database.EnsureCreated();
 
-            if (!context.Autores.Any() && !context.Libros.Any() && !context.AutorLibro.Any())
+            if (!context.Autores.Any() && !context.Libros.Any() && !context.AutorLibros.Any())
             {
                 // Crear autores
                 var autores = new List<Autor>
@@ -120,7 +120,7 @@ namespace BibliotecaWebApplication.Models.Seeds
                 };
 
                 // Agregar relaciones AutorLibro al contexto
-                context.AutorLibro.AddRange(autorLibros);
+                context.AutorLibros.AddRange(autorLibros);
 
                 // Guardar cambios en la base de datos
                 await context.SaveChangesAsync();
