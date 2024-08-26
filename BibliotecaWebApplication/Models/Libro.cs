@@ -7,6 +7,9 @@
         public string Titulo { get; set; }
         public int NumeroPaginas { get; set; }
         public string Formato { get; set; }
+        public string? Portada { get; set; }
+        public string? Contraportada { get; set; }
+
 
         public int PublicacionId { get; set; }
         public Publicacion Publicacion { get; set; }

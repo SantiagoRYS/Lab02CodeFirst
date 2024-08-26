@@ -4,6 +4,7 @@ using BibliotecaWebApplication.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaWebApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240824170855_v11")]
+    partial class v11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,7 @@ namespace BibliotecaWebApplication.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Imagen")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nacionalidad")
@@ -132,9 +136,6 @@ namespace BibliotecaWebApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Contraportada")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Formato")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -145,9 +146,6 @@ namespace BibliotecaWebApplication.Migrations
 
                     b.Property<int>("NumeroPaginas")
                         .HasColumnType("int");
-
-                    b.Property<string>("Portada")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PublicacionId")
                         .HasColumnType("int");

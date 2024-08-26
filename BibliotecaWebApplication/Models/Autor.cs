@@ -11,6 +11,10 @@
 
         public string Nacionalidad { get; set; }
 
+
+        public string? Imagen { get; set; } // Propiedad para almacenar la ruta de la imagen
+
+
         public Autor()
         {
             this.AutorId = Guid.NewGuid();

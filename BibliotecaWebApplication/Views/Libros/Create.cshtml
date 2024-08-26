@@ -33,6 +33,17 @@
                 <span asp-validation-for="Formato" class="text-danger"></span>
             </div>
 
+            <div class="form-group">
+                <label asp-for="Portada" class="control-label">Portada</label>
+                <input type="file" asp-for="Portada" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Contraportada" class="control-label">Contraportada</label>
+                <input type="file" asp-for="Contraportada" class="form-control" />
+            </div>
+
+
             <h4>Seleccionar Autor(es)</h4>
             <table id="dataTable" class="table">
                 <thead>

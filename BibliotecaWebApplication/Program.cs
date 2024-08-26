@@ -76,6 +76,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+//para que me deje subir las imagenes
+app.UseStaticFiles();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

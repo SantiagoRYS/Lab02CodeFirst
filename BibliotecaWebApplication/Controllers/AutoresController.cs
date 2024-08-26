@@ -36,10 +36,13 @@ namespace BibliotecaWebApplication.Controllers
                 return NotFound();
             }
 
+
             var autor = await _context.Autores
                 .Include(a => a.AutorLibros) // Incluye los libros asociados al autor
                 .ThenInclude(al => al.Libro) // Incluye los detalles de los libros
                 .FirstOrDefaultAsync(a => a.AutorId == id);
+
+            var img = autor.Imagen;
             if (autor == null)
             {
                 return NotFound();
@@ -56,15 +59,29 @@ namespace BibliotecaWebApplication.Controllers
         }
 
         // POST: Autores/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> Create([Bind("AutorId,Nombres,Apellidos,Nacionalidad")] Autor autor)
+        public async Task<IActionResult> Create([Bind("AutorId,Nombres,Apellidos,Nacionalidad,Imagen")] Autor autor, IFormFile ImagenAutor)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
+                //agregar la imagen
+                if (ImagenAutor != null )
+                {
+                    var fileName = Path.GetFileName(ImagenAutor.FileName);
+                    var filePath = Path.Combine("wwwroot/images/autores", fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await ImagenAutor.CopyToAsync(stream);
+                    }
+
+                    autor.Imagen = "/images/autores/" + fileName;
+                }
+
+
+
                 autor.AutorId = Guid.NewGuid();
                 _context.Add(autor);
                 await _context.SaveChangesAsync();
@@ -99,22 +116,33 @@ namespace BibliotecaWebApplication.Controllers
         }
 
         // POST: Autores/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Bibliotecario, Administrador")]
-        public async Task<IActionResult> Edit(Guid id, [Bind("AutorId,Nombres,Apellidos,Nacionalidad")] Autor autor)
+        public async Task<IActionResult> Edit(Guid id, [Bind("AutorId,Nombres,Apellidos,Nacionalidad,Imagen")] Autor autor, IFormFile ImagenAutor)
         {
             if (id != autor.AutorId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
+                    if (ImagenAutor != null)
+                    {
+                        var fileName = Path.GetFileName(ImagenAutor.FileName);
+                        var filePath = Path.Combine("wwwroot/images/autores", fileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await ImagenAutor.CopyToAsync(stream);
+                        }
+
+                        autor.Imagen = "/images/autores/" + fileName;  // Almacena la nueva URL de la foto
+                    }
+
                     _context.Update(autor);
                     await _context.SaveChangesAsync();
                 }
@@ -162,10 +190,21 @@ namespace BibliotecaWebApplication.Controllers
             var autor = await _context.Autores.FindAsync(id);
             if (autor != null)
             {
-                _context.Autores.Remove(autor);
-            }
+                if (autor != null)
+                {
+                    if (!string.IsNullOrEmpty(autor.Imagen))
+                    {
+                        var imagePath = Path.Combine("wwwroot", autor.Imagen);
+                        if (System.IO.File.Exists(imagePath))
+                        {
+                            System.IO.File.Delete(imagePath);
+                        }
+                    }
+                    _context.Autores.Remove(autor);
+                }
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

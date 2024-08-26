@@ -1,37 +1,37 @@
 ﻿@model BibliotecaWebApplication.Models.Libro
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles";
 }
 
 <h1>Detalles</h1>
 
 <div>
     <h4>Libro</h4>
-    <hr />
+    <br />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.ISBN)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.ISBN)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Titulo)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Titulo)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.NumeroPaginas)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.NumeroPaginas)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Formato)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Formato)
         </dd>
         <dt class="col-sm-2">
@@ -39,6 +39,32 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PublicacionId)
+        </dd>
+        <dt class="col-sm-2">
+            Portada
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Portada != null)
+            {
+                <img src="~/Imagenes/Libros/@Model.Portada" alt="Portada" class="img-thumbnail" style="max-width: 200px;" />
+            }
+            else
+            {
+                <p>No hay imagen de portada disponible.</p>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Contraportada
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Contraportada != null)
+            {
+                <img src="~/Imagenes/Libros/@Model.Contraportada" alt="Contraportada" class="img-thumbnail" style="max-width: 200px;" />
+            }
+            else
+            {
+                <p>No hay imagen de contraportada disponible.</p>
+            }
         </dd>
     </dl>
 </div>
