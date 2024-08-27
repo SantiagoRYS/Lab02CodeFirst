@@ -149,7 +149,7 @@ namespace BibliotecaWebApplication.Migrations
                     b.Property<string>("Portada")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PublicacionId")
+                    b.Property<int?>("PublicacionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Titulo")
@@ -422,9 +422,7 @@ namespace BibliotecaWebApplication.Migrations
                 {
                     b.HasOne("BibliotecaWebApplication.Models.Publicacion", "Publicacion")
                         .WithMany("Libros")
-                        .HasForeignKey("PublicacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublicacionId");
 
                     b.Navigation("Publicacion");
                 });

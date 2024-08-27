@@ -70,14 +70,14 @@ namespace BibliotecaWebApplication.Controllers
                 if (ImagenAutor != null )
                 {
                     var fileName = Path.GetFileName(ImagenAutor.FileName);
-                    var filePath = Path.Combine("wwwroot/images/autores", fileName);
+                    var filePath = Path.Combine("wwwroot/Imagenes/Autores", fileName);
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         await ImagenAutor.CopyToAsync(stream);
                     }
 
-                    autor.Imagen = "/images/autores/" + fileName;
+                    autor.Imagen = "/Imagenes/Autores/" + fileName;
                 }
 
 
@@ -133,14 +133,14 @@ namespace BibliotecaWebApplication.Controllers
                     if (ImagenAutor != null)
                     {
                         var fileName = Path.GetFileName(ImagenAutor.FileName);
-                        var filePath = Path.Combine("wwwroot/images/autores", fileName);
+                        var filePath = Path.Combine("wwwroot/Imagenes/Autores", fileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
                             await ImagenAutor.CopyToAsync(stream);
                         }
 
-                        autor.Imagen = "/images/autores/" + fileName;  // Almacena la nueva URL de la foto
+                        autor.Imagen = "/Imagenes/Autores/" + fileName;  // Almacena la nueva URL de la foto
                     }
 
                     _context.Update(autor);

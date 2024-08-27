@@ -76,24 +76,27 @@ namespace BibliotecaWebApplication.Controllers
                 libro.PublicacionId = publicacion.PublicacionId;
                 libro.LibroId = Guid.NewGuid();
 
-                if (portada != null)
+                // Guardar la imagen de la portada
+                if (portada != null && portada.Length > 0)
                 {
-                    string portadaPath = Path.Combine("wwwroot\\Imagenes\\Libros", $"{libro.LibroId}_portada{Path.GetExtension(portada.FileName)}");
+                    string portadaFileName = Path.GetFileName(portada.FileName);
+                    string portadaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagenes/Libros", portadaFileName);
                     using (var stream = new FileStream(portadaPath, FileMode.Create))
                     {
                         await portada.CopyToAsync(stream);
                     }
-                    libro.Portada = $"/Imagenes/Libros/{libro.LibroId}_portada{Path.GetExtension(portada.FileName)}";
+                    libro.Portada = portadaFileName;
                 }
 
-                if (contraportada != null)
+                if (contraportada != null && contraportada.Length > 0)
                 {
-                    string contraportadaPath = Path.Combine("wwwroot\\Imagenes\\Libros", $"{libro.LibroId}_contraportada{Path.GetExtension(contraportada.FileName)}");
+                    string contraportadaFileName = Path.GetFileName(contraportada.FileName);
+                    string contraportadaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagenes/Libros", contraportadaFileName);
                     using (var stream = new FileStream(contraportadaPath, FileMode.Create))
                     {
                         await contraportada.CopyToAsync(stream);
                     }
-                    libro.Contraportada = $"/Imagenes/Libros/{libro.LibroId}_contraportada{Path.GetExtension(contraportada.FileName)}";
+                    libro.Contraportada = contraportadaFileName;
                 }
 
                 _context.Add(libro);
@@ -152,7 +155,7 @@ namespace BibliotecaWebApplication.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Bibliotecario, Administrador")]
-        public async Task<IActionResult> Edit(Guid? id, [Bind("LibroId,ISBN,Titulo,NumeroPaginas,Formato,PublicacionId,Portada,Contraportada")] Libro libro, Guid[] selectedAutores, IFormFile portada, IFormFile contraportada)
+        public async Task<IActionResult> Edit(Guid? id, [Bind("LibroId,ISBN,Titulo,NumeroPaginas,Formato,Portada,Contraportada,PublicacionId")] Libro libro, Guid[] selectedAutores, IFormFile portada, IFormFile contraportada)
         {
             if (id != libro.LibroId)
             {
@@ -177,27 +180,29 @@ namespace BibliotecaWebApplication.Controllers
                     libroDb.NumeroPaginas = libro.NumeroPaginas;
                     libroDb.Formato = libro.Formato;
 
-
-                    if (portada != null)
+                    // Actualizar la portada
+                    if (portada != null && portada.Length > 0)
                     {
-                        string portadaPath = Path.Combine("wwwroot\\Imagenes\\Libros", $"{libroDb.LibroId}_portada{Path.GetExtension(portada.FileName)}");
+                        string portadaFileName = Path.GetFileName(portada.FileName);
+                        string portadaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagenes/Libros", portadaFileName);
                         using (var stream = new FileStream(portadaPath, FileMode.Create))
                         {
                             await portada.CopyToAsync(stream);
                         }
-                        libroDb.Portada = $"/Imagenes/Libros/{libroDb.LibroId}_portada{Path.GetExtension(portada.FileName)}";
+                        libroDb.Portada = portadaFileName; // Actualizar el nombre del archivo en el modelo
                     }
 
-                    if (contraportada != null)
+                    // Actualizar la contraportada
+                    if (contraportada != null && contraportada.Length > 0)
                     {
-                        string contraportadaPath = Path.Combine("wwwroot\\Imagenes\\Libros", $"{libroDb.LibroId}_contraportada{Path.GetExtension(contraportada.FileName)}");
+                        string contraportadaFileName = Path.GetFileName(contraportada.FileName);
+                        string contraportadaPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Imagenes/Libros", contraportadaFileName);
                         using (var stream = new FileStream(contraportadaPath, FileMode.Create))
                         {
                             await contraportada.CopyToAsync(stream);
                         }
-                        libroDb.Contraportada = $"/Imagenes/Libros/{libroDb.LibroId}_contraportada{Path.GetExtension(contraportada.FileName)}";
+                        libroDb.Contraportada = contraportadaFileName; // Actualizar el nombre del archivo en el modelo
                     }
-
 
                     _context.Update(libroDb);
                     await _context.SaveChangesAsync();
@@ -219,8 +224,6 @@ namespace BibliotecaWebApplication.Controllers
                         await _context.SaveChangesAsync();
                     }
                 }
-
-
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!LibroExists(libro.LibroId))
@@ -239,6 +242,8 @@ namespace BibliotecaWebApplication.Controllers
             ViewBag.SelectedAutores = selectedAutores != null ? selectedAutores.ToList() : new List<Guid>();
             return View(libro);
         }
+
+
 
         // GET: LibrosController/Delete/5
         [Authorize(Roles = "Administrador")]

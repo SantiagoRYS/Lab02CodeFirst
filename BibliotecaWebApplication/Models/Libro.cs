@@ -11,7 +11,7 @@
         public string? Contraportada { get; set; }
 
 
-        public int PublicacionId { get; set; }
+        public int? PublicacionId { get; set; }
         public Publicacion Publicacion { get; set; }
 
         public Libro()

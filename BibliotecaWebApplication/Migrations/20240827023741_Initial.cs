@@ -18,7 +18,8 @@ namespace BibliotecaWebApplication.Migrations
                     AutorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Nombres = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Apellidos = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nacionalidad = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Nacionalidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Imagen = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,7 +190,9 @@ namespace BibliotecaWebApplication.Migrations
                     Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     NumeroPaginas = table.Column<int>(type: "int", nullable: false),
                     Formato = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublicacionId = table.Column<int>(type: "int", nullable: false)
+                    Portada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Contraportada = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PublicacionId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -198,8 +201,7 @@ namespace BibliotecaWebApplication.Migrations
                         name: "FK_Libros_Publicaciones_PublicacionId",
                         column: x => x.PublicacionId,
                         principalTable: "Publicaciones",
-                        principalColumn: "PublicacionId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "PublicacionId");
                 });
 
             migrationBuilder.CreateTable(

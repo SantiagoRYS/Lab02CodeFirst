@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ISBN" class="control-label"></label>
@@ -34,14 +34,14 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Portada" class="control-label">Portada</label>
-                <input type="file" asp-for="Portada" class="form-control" />
+                <label for="Portada">Portada</label>
+                <input type="file" class="form-control" name="portada" id="Portada" />
+            </div>
+            <div class="form-group">
+                <label for="Contraportada">Contraportada</label>
+                <input type="file" class="form-control" name="contraportada" id="Contraportada" />
             </div>
 
-            <div class="form-group">
-                <label asp-for="Contraportada" class="control-label">Contraportada</label>
-                <input type="file" asp-for="Contraportada" class="form-control" />
-            </div>
 
 
             <h4>Seleccionar Autor(es)</h4>

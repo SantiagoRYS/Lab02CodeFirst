@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotecaWebApplication.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240821003017_Initial")]
+    [Migration("20240827023741_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace BibliotecaWebApplication.Migrations
 
                     b.Property<string>("Apellidos")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imagen")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nacionalidad")
@@ -132,6 +135,9 @@ namespace BibliotecaWebApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Contraportada")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Formato")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -143,7 +149,10 @@ namespace BibliotecaWebApplication.Migrations
                     b.Property<int>("NumeroPaginas")
                         .HasColumnType("int");
 
-                    b.Property<int>("PublicacionId")
+                    b.Property<string>("Portada")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PublicacionId")
                         .HasColumnType("int");
 
                     b.Property<string>("Titulo")
@@ -416,9 +425,7 @@ namespace BibliotecaWebApplication.Migrations
                 {
                     b.HasOne("BibliotecaWebApplication.Models.Publicacion", "Publicacion")
                         .WithMany("Libros")
-                        .HasForeignKey("PublicacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PublicacionId");
 
                     b.Navigation("Publicacion");
                 });
